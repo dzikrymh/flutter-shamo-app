@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shamo/providers/wishlist_provider.dart';
 import 'package:shamo/theme.dart';
 import 'package:shamo/widgets/wishlist_card.dart';
 
 class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+
     Widget header() {
       return AppBar(
         backgroundColor: backgroundColor1,
@@ -90,10 +94,11 @@ class FavoritePage extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               horizontal: defaultMargin,
             ),
-            children: [
-              WishlistCard(),
-              WishlistCard(),
-            ],
+            children: wishlistProvider.wishlist
+                .map(
+                  (product) => WishlistCard(product),
+                )
+                .toList(),
           ),
         ),
       );
@@ -102,8 +107,7 @@ class FavoritePage extends StatelessWidget {
     return Column(
       children: [
         header(),
-        // emptyWishList(),
-        content(),
+        wishlistProvider.wishlist.length == 0 ? emptyWishList() : content(),
       ],
     );
   }

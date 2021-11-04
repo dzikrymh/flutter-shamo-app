@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shamo/models/product_model.dart';
+import 'package:shamo/pages/product_page.dart';
 import 'package:shamo/theme.dart';
 
 class ProductTile extends StatelessWidget {
@@ -10,7 +11,12 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductPage(product),
+          ),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(
