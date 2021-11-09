@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shamo/pages/home/chat_page.dart';
 import 'package:shamo/pages/home/favorite_page.dart';
 import 'package:shamo/pages/home/home_page.dart';
 import 'package:shamo/pages/home/profile_page.dart';
+import 'package:shamo/providers/page_provider.dart';
 import 'package:shamo/theme.dart';
 
 class MainPage extends StatefulWidget {
@@ -11,10 +13,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
+
     Widget cartButton() {
       return FloatingActionButton(
         onPressed: () {
@@ -42,11 +44,9 @@ class _MainPageState extends State<MainPage> {
             showSelectedLabels: false,
             showUnselectedLabels: false,
             type: BottomNavigationBarType.fixed,
-            currentIndex: currentIndex,
+            currentIndex: pageProvider.currentIndex,
             onTap: (value) {
-              setState(() {
-                currentIndex = value;
-              });
+              pageProvider.currentIndex = value;
             },
             items: [
               BottomNavigationBarItem(
@@ -58,7 +58,9 @@ class _MainPageState extends State<MainPage> {
                   child: Image.asset(
                     'assets/icon_home.png',
                     width: 21,
-                    color: currentIndex == 0 ? primaryColor : deactiveColor,
+                    color: pageProvider.currentIndex == 0
+                        ? primaryColor
+                        : deactiveColor,
                   ),
                 ),
                 label: "Home",
@@ -72,7 +74,9 @@ class _MainPageState extends State<MainPage> {
                   child: Image.asset(
                     'assets/icon_chat.png',
                     width: 20,
-                    color: currentIndex == 1 ? primaryColor : deactiveColor,
+                    color: pageProvider.currentIndex == 1
+                        ? primaryColor
+                        : deactiveColor,
                   ),
                 ),
                 label: "Chat",
@@ -86,7 +90,9 @@ class _MainPageState extends State<MainPage> {
                   child: Image.asset(
                     'assets/icon_favorite.png',
                     width: 20,
-                    color: currentIndex == 2 ? primaryColor : deactiveColor,
+                    color: pageProvider.currentIndex == 2
+                        ? primaryColor
+                        : deactiveColor,
                   ),
                 ),
                 label: "Wishlist",
@@ -100,7 +106,9 @@ class _MainPageState extends State<MainPage> {
                   child: Image.asset(
                     'assets/icon_profile.png',
                     width: 18,
-                    color: currentIndex == 3 ? primaryColor : deactiveColor,
+                    color: pageProvider.currentIndex == 3
+                        ? primaryColor
+                        : deactiveColor,
                   ),
                 ),
                 label: "Profile",
@@ -112,7 +120,7 @@ class _MainPageState extends State<MainPage> {
     }
 
     Widget body() {
-      switch (currentIndex) {
+      switch (pageProvider.currentIndex) {
         case 0:
           return HomePage();
           break;
@@ -131,7 +139,8 @@ class _MainPageState extends State<MainPage> {
     }
 
     return Scaffold(
-      backgroundColor: currentIndex == 0 ? backgroundColor1 : backgroundColor3,
+      backgroundColor:
+          pageProvider.currentIndex == 0 ? backgroundColor1 : backgroundColor3,
       floatingActionButton: cartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: customBottomNav(),
